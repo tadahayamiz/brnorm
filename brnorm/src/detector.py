@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 from statsmodels.stats.multitest import multipletests
+from tqdm.auto import tqdm, trange
 
 class Data:
     """ data instance """
@@ -102,7 +103,7 @@ class TwoGroupDetector(Detector):
         p = self.grd.n_feature
         diff = np.zeros((p,))
         pval = np.zeros((p,))
-        for i in range(p):
+        for i in trange(p):
             pval[i] = stats.ttest_ind(self.grd.X[i], self.tgt.X[i], equal_var=False)[1]
             diff[i] = self.grd.X[i].mean() - self.tgt.X[i].mean()
         qval = multipletests(pval, method="fdr_bh")[1]
