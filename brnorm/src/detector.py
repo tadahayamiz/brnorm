@@ -112,9 +112,6 @@ class TwoGroupDetector(Detector):
             )
         res.loc[:, "check_diff"] = res["diff_abs"] >= fold
         res.loc[:, "check_qval"] = res["qval"] <= alpha
-
-        print(res.head())
-
         res.loc[:, "diff_feature"] = res["check_diff"] & res["check_qval"]
         self.summary = res[["diff", "pval", "qval", "name_feature", "diff_feature"]].copy()
         return list(res[res["diff_feature"]].index)
