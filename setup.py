@@ -6,15 +6,15 @@ with open('requirements.txt') as requirements_file:
 # modify entry_points to use command line 
 # {COMMAND NAME}={module path}:{function in the module}
 setup(
-    name="seap2vec",
+    name="brnorm",
     version="0.0.1",
-    description="a package that converts SEAP data into vector",
+    description="a package for normalization of omics data",
     author="tadahaya",
     packages=find_packages(),
     install_requires=install_requirements,
     entry_points={
         "console_scripts": [
-            "histogram2vec=histogram2vec.note_230913_01:main",
+            "brnorm=brnorm.main:main",
         ]
     },
     classifiers=[

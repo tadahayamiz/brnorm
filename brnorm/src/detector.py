@@ -57,7 +57,7 @@ class Detector:
             feature x sample matrix
         
         """
-        self.grd = Data.load(data)
+        self.grd = Data(data)
 
     
     def load_tgt(self, data):
@@ -68,11 +68,13 @@ class Detector:
             feature x sample matrix
         
         """
-        self.tgt = Data.load(data)
+        self.tgt = Data(data)
 
 
     def check_feature(self):
         """ check whether features are the same or not"""
+        if self.grd.X == None:
+            raise ValueError("!! load the ground truth and target data before this !!")
         if self.grd.feature == self.tgt.feature:
             return True
         else:
