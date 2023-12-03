@@ -73,7 +73,7 @@ class Detector:
 
     def check_feature(self):
         """ check whether features are the same or not"""
-        if self.grd.X == None:
+        if self.grd.X is None:
             raise ValueError("!! load the ground truth and target data before this !!")
         if self.grd.feature == self.tgt.feature:
             return True
