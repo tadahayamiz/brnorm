@@ -110,9 +110,12 @@ class TwoGroupDetector(Detector):
         res = pd.DataFrame(
             {"diff":diff, "pval":pval, "qval":qval, "diff_abs":np.abs(diff), "name_feature":self.grd.feature},
             )
-        res.loc["check_diff"] = res["diff_abs"] >= fold
-        res.loc["check_qval"] = res["qval"] <= alpha
-        res.loc["diff_feature"] = res.loc["check_diff"] & res.loc["check_qval"]
+        res.loc[:, "check_diff"] = res["diff_abs"] >= fold
+        res.loc[:, "check_qval"] = res["qval"] <= alpha
+        res.loc[:, "diff_feature"] = res.loc["check_diff"] & res.loc["check_qval"]
+        
+        print(res.head())
+
         self.summary = res[["diff", "pval", "qval", "name_feature", "diff_feature"]].copy()
         return list(res[res["diff_feature"]].index)
 
