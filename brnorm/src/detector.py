@@ -57,7 +57,7 @@ class Detector:
             feature x sample matrix
         
         """
-        self.grd = Data(data)
+        self.grd.load(data)
 
     
     def load_tgt(self, data):
@@ -68,7 +68,7 @@ class Detector:
             feature x sample matrix
         
         """
-        self.tgt = Data(data)
+        self.tgt.load(data)
 
 
     def check_feature(self):
