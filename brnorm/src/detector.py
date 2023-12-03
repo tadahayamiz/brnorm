@@ -17,7 +17,7 @@ class Data:
             feature x sample (consistent with usual omics data)
 
         """
-        self.X = None # value: sample x feature
+        self.X = None # value: feature x sample
         self.sample = None # sample name list
         self.feature = None # feature name list
         self.n_sample = None # sample num
@@ -32,11 +32,10 @@ class Data:
             feature x sample (consistent with usual omics data)
 
         """
-        tmp = data.T
-        self.X = tmp.values
-        self.sample = list(tmp.index)
-        self.feature = list(tmp.columns)
-        self.n_sample, self.n_feature = tmp.shape
+        self.X = data.values
+        self.sample = list(tmp.columns)
+        self.feature = list(tmp.index)
+        self.n_feature, self.n_sample = tmp.shape
 
 
 class Detector:
