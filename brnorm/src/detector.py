@@ -33,9 +33,9 @@ class Data:
 
         """
         self.X = data.values
-        self.sample = list(tmp.columns)
-        self.feature = list(tmp.index)
-        self.n_feature, self.n_sample = tmp.shape
+        self.sample = list(data.columns)
+        self.feature = list(data.index)
+        self.n_feature, self.n_sample = data.shape
 
 
 class Detector:
