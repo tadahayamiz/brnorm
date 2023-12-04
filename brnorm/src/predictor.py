@@ -33,11 +33,11 @@ class Predictor:
 class RFPredictor(Predictor):
     """ Random forest-based predictor """
     def __init__(
-            self, seed:int=222, n_estimators:int=100, max_depth:int=6,
-            min_samples_split:float=2, min_samples_leaf:int=1,
-            max_features:float=0.1,
-            oob_score:bool=True, ccp_alpha:float=0.1, 
-            max_samples:float=0.9, verbose:bool=False,
+            self, seed:int=222, n_estimators:int=100, max_depth:int=5,
+            min_samples_split:float=2, min_samples_leaf:int=2,
+            max_features:float="sqrt",
+            oob_score:bool=True, ccp_alpha:float=0.3, 
+            max_samples:float=0.8, verbose:bool=False,
             n_jobs:int=-1
             ):
         super().__init__()
