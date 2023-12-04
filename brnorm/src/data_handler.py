@@ -96,7 +96,7 @@ class DataHandler:
         if ctl.shape[0] == 0:
             print(f"!! CAUTION: no sample includes {key_ctl} !!")
         ctl_col = list(ctl.columns)
-        self.grd_trt.load(data)
+        self.grd.load(data)
         self.grd_ctl.load(data[ctl_col])
         if self.tgt.feature is not None:
             assert self.grd.feature == self.tgt.feature
