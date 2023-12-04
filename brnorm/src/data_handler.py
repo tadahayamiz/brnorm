@@ -43,7 +43,8 @@ class Data:
         self.sample_mean = data.mean(axis=0)
         self.sample_std = data.std(axis=0, ddof=1)
         if normalize:
-            self.X = (self.X - self.sample_mean) / self.sample_std
+            self.X = (self.X.T - self.sample_mean) / self.sample_std
+            self.X = self.X.T
 
 
     def split(self, idx):
