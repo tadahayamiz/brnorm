@@ -46,7 +46,7 @@ class Data:
 
     def split(self, idx):
         """ split data based on the given index """
-        self.idx_remain = idx
+        self.idx_split = idx
         self.y = self.X[idx, :]
         self.idx_remain = [v for v in range(self.n_feature) if v not in idx]
         self.X = self.X[self.idx_remain, :] # update
