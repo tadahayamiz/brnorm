@@ -10,34 +10,8 @@ from scipy import stats
 from statsmodels.stats.multitest import multipletests
 from tqdm.auto import tqdm, trange
 
-class Data:
-    """ data instance """
-    def __init__(self, data=None):
-        """
-        data: dataframe
-            feature x sample (consistent with usual omics data)
-
-        """
-        self.X = None # value: feature x sample
-        self.sample = None # sample name list
-        self.feature = None # feature name list
-        self.n_sample = None # sample num
-        self.n_feature = None # feature num
-        if data is not None:
-            self.load(data)
-
-
-    def load(self, data):
-        """
-        data: dataframe
-            feature x sample (consistent with usual omics data)
-
-        """
-        self.X = data.values
-        self.sample = list(data.columns)
-        self.feature = list(data.index)
-        self.n_feature, self.n_sample = data.shape
-
+# original
+from data_handler import Data
 
 class Detector:
     """
