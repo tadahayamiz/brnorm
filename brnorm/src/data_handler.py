@@ -43,7 +43,6 @@ class Data:
         self.sample_mean = self.X.mean(axis=0)
         self.sample_std = self.X.std(axis=0, ddof=1)
         if normalize:
-            print(self.X.shape, self.sample_mean.shape, self.sample_std.shape)
             self.X = (self.X - self.sample_mean) / self.sample_std
 
 
