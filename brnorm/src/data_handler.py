@@ -54,7 +54,7 @@ class Data:
 
     def concat(self):
         """ concat again """
-        tmp = self.zeros((self.n_feature, self.n_sample))
+        tmp = np.zeros((self.n_feature, self.n_sample))
         for i in range(self.n_feature):
             if i in self.idx_remain:
                 tmp[i, :] = self.X[0]
