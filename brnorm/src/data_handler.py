@@ -40,8 +40,8 @@ class Data:
         self.sample = list(data.columns)
         self.feature = list(data.index)
         self.n_feature, self.n_sample = data.shape
-        self.sample_mean = data.mean(axis=0)
-        self.sample_std = data.std(axis=0, ddof=1)
+        self.sample_mean = data.mean(axis=0).flatten()
+        self.sample_std = data.std(axis=0, ddof=1).flatten()
         if normalize:
             print(self.X.shape, self.sample_mean.shape, self.sample_std.shape)
             self.X = (self.X - self.sample_mean) / self.sample_std
