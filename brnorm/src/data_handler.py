@@ -30,7 +30,7 @@ class Data:
             self.load(data)
 
 
-    def load(self, data):
+    def load(self, data, normalize:bool=True):
         """
         data: dataframe
             feature x sample (consistent with usual omics data)
@@ -42,6 +42,8 @@ class Data:
         self.n_feature, self.n_sample = data.shape
         self.sample_mean = data.mean(axis=0)
         self.sample_std = data.std(axis=0, ddof=1)
+        if normalize:
+            self.X = (self.X - self.sample_mean) / self.sample_std
 
 
     def split(self, idx):
@@ -96,15 +98,10 @@ class DataHandler:
         if ctl.shape[0] == 0:
             print(f"!! CAUTION: no sample includes {key_ctl} !!")
         ctl_col = list(ctl.columns)
-        self.grd.load(data)
-        self.grd_ctl.load(data[ctl_col])
+        self.grd.load(data, normalize)
+        self.grd_ctl.load(data[ctl_col], normalize)
         if self.tgt.feature is not None:
             assert self.grd.feature == self.tgt.feature
-        if normalize:
-            self.grd = (self.grd.T - self.grd.sample_mean) / self.grd.sample_std
-            self.grd = self.grd.T
-            self.grd_ctl = (self.grd_ctl.T - self.grd_ctl.sample_mean) / self.grd_ctl.sample_std
-            self.grd_ctl = self.grd_ctl.T
 
     
     def load_tgt(self, data, key_ctl:str="dmso", normalize:bool=True):
@@ -119,15 +116,10 @@ class DataHandler:
         if ctl.shape[0] == 0:
             print(f"!! CAUTION: no sample includes {key_ctl} !!")
         ctl_col = list(ctl.columns)
-        self.tgt.load(data)
-        self.tgt_ctl.load(data[ctl_col])
+        self.tgt.load(data, normalize)
+        self.tgt_ctl.load(data[ctl_col], normalize)
         if self.grd.feature is not None:
             assert self.grd.feature == self.tgt.feature
-        if normalize:
-            self.tgt = (self.tgt.T - self.tgt.sample_mean) / self.tgt.sample_std
-            self.tgt = self.tgt.T
-            self.tgt_ctl = (self.tgt_ctl.T - self.tgt_ctl.sample_mean) / self.tgt_ctl.sample_std
-            self.tgt_ctl = self.tgt_ctl.T
 
 
     def split_data(self, idx):
