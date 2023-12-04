@@ -15,10 +15,8 @@ from sklearn.ensemble import RandomForestRegressor
 
 class Predictor:
     """ 予測モデル """
-    def __init__(self, seed:int=222):
-        self.random_seed = seed
-        self.models = []
-
+    def __init__(self):
+        pass
 
     def fit(self):
         raise NotImplementedError
@@ -35,13 +33,14 @@ class Predictor:
 class RFPredictor(Predictor):
     """ Random forest-based predictor """
     def __init__(
-            self, n_estimators:int=100, max_depth:int=6,
+            self, seed:int=222, n_estimators:int=100, max_depth:int=6,
             min_samples_split:float=2, min_samples_leaf:int=1,
             max_features:float=0.1,
             oob_score:bool=True, ccp_alpha:float=0.1, 
             max_samples:float=0.9
             ):
         super().__init__()
+        self.seed = seed
         self._tmp = RandomForestRegressor(
             random_state=self.seed,
             n_estimators=n_estimators, max_depth=max_depth,
