@@ -74,7 +74,17 @@ class DataHandler:
         self.tgt_ctl = Data()
 
     
-    def load_grd(self, data, key_ctl:str="dmso"):
+    def get_grd(self):
+        """ getter for grd, (control, treatment) """
+        return (self.grd_ctl, self.grd_trt)
+
+
+    def get_tgt(self):
+        """ getter for tgt, (control, treatment) """
+        return (self.tgt_ctl, self.tgt_trt)
+
+
+    def load_grd(self, data, key_ctl:str="dmso", normalize:bool=True):
         """
         load ground truth data
         
@@ -91,9 +101,14 @@ class DataHandler:
         self.grd_ctl.load(data[ctl_col])
         if self.tgt_trt.feature is not None:
             assert self.grd_trt.feature == self.tgt_trt.feature
+        if normalize:
+            self.grd_ctl = (self.grd_ctl.T - self.grd_ctl.sample_mean) / self.grd_ctl.sample_std
+            self.grd_ctl = self.grd_ctl.T
+            self.grd_trt = (self.grd_trt.T - self.grd_trt.sample_mean) / self.grd_trt.sample_std
+            self.grd_trt = self.grd_trt.T
 
     
-    def load_tgt(self, data, key_ctl:str="dmso"):
+    def load_tgt(self, data, key_ctl:str="dmso", normalize:bool=True):
         """
         load target data
         
@@ -110,6 +125,11 @@ class DataHandler:
         self.tgt_ctl.load(data[ctl_col])
         if self.grd_trt.feature is not None:
             assert self.grd_trt.feature == self.tgt_trt.feature
+        if normalize:
+            self.tgt_ctl = (self.tgt_ctl.T - self.tgt_ctl.sample_mean) / self.tgt_ctl.sample_std
+            self.tgt_ctl = self.tgt_ctl.T
+            self.tgt_trt = (self.tgt_trt.T - self.tgt_trt.sample_mean) / self.tgt_trt.sample_std
+            self.tgt_trt = self.tgt_trt.T
 
 
     def split_data(self, idx):
