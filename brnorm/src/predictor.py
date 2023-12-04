@@ -48,7 +48,8 @@ class RFPredictor(Predictor):
             min_samples_leaf=min_samples_leaf,
             max_features=max_features,
             oob_score=oob_score, ccp_alpha=ccp_alpha,
-            max_samples=max_samples
+            max_samples=max_samples,
+            verbose=True
             )
         self.models = []
         self.oob_scores = None
@@ -70,6 +71,9 @@ class RFPredictor(Predictor):
         self.oob_scores = np.zeros(p)
         for i in trange(p):
             tmp_y = y[:, i]
+
+            print(tmp_y.shape, X.shape)
+            
             self.models[i].fit(X, tmp_y)
             self.oob_scores[i] = self.models[i].oob_score
 
