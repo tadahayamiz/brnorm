@@ -54,6 +54,7 @@ class RFPredictor(Predictor):
             )
         self.models = []
         self.oob_scores = None
+        self.n_predicted = None
 
 
     def fit(self, X, y):
@@ -68,6 +69,7 @@ class RFPredictor(Predictor):
             
         """
         p = y.shape[1]
+        self.n_predicted = p
         self.models = [deepcopy(self._tmp) for i in range(p)]
         self.oob_scores = np.zeros(p)
         for i in trange(p):
@@ -76,9 +78,18 @@ class RFPredictor(Predictor):
             self.oob_scores[i] = self.models[i].oob_score
 
 
-    def predict(self):
-        raise NotImplementedError
-    
+    def predict(self, X):
+        """
+        X: 2d-array
+            not different feature matrix
+            sample x feature
+        
+        """
+        res = np.zeros((X.shape[0], self.n_predicted))
+        for i in trange(self.n_predicted):
+            res[:, i] = self.models[i].predict(X)
+        return res
+
 
     def eval(self):
         raise NotImplementedError
