@@ -54,18 +54,15 @@ class Data:
 
     def concat(self):
         """ concat again """
-        tmp = np.zeros((self.n_feature, self.n_sample))
-        for i in range(self.n_feature):
-            if i in self.idx_remain:
-                tmp[i, :] = self.X[0]
-                del self.X[0]
-            elif i in self.idx_split:
-                tmp[i, :] = self.y[0]
-                del self.y[0]
-            else:
-                raise IndexError
-        assert self.X.shape[0] == 0
-        self.X = tmp
+        name_split = self.feature[self.idx_split]
+        name_remain = self.feature[self.idx_remain]
+        spl = pd.DataFrame(self.y, index=name_split, columns=self.sample)
+        rem = pd.DataFrame(self.X, index=name_remain, columns=self.sample)
+        tmp = pd.concat([rem, spl], axis=0, join="inner")
+        tmp = tmp.loc[self.feature, :]
+        # update
+        self.X = tmp.values
+        self.y = None
 
 
 class DataHandler:
@@ -114,4 +111,14 @@ class DataHandler:
         
         """
         for d in [self.grd_ctl, self.grd_trt, self.tgt_ctl, self.tgt_trt]:
-            pass
+            d.split(idx)
+
+
+    def concat_data(self):
+        """
+        idx: list
+            ground truthとtargetで異なるindex
+        
+        """
+        for d in [self.grd_ctl, self.grd_trt, self.tgt_ctl, self.tgt_trt]:
+            d.concat()
