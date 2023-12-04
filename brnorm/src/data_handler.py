@@ -83,10 +83,14 @@ class DataHandler:
         
         """
         ctl = data.loc[:, data.columns.str.contains(key_ctl)]
+        if ctl.shape[0] == 0:
+            print(f"!! CAUTION: no sample includes {key_ctl} !!")
         ctl_col = list(ctl.columns)
         trt_col = [v for v in data.columns if v not in ctl_col]
         self.grd_trt.load(data[trt_col])
         self.grd_ctl.load(data[ctl_col])
+        if self.tgt.feature is not None:
+            assert self.grd.feature == self.tgt.feature
 
     
     def load_tgt(self, data, key_ctl:str="dmso"):
@@ -98,10 +102,14 @@ class DataHandler:
         
         """
         ctl = data.loc[:, data.columns.str.contains(key_ctl)]
+        if ctl.shape[0] == 0:
+            print(f"!! CAUTION: no sample includes {key_ctl} !!")
         ctl_col = list(ctl.columns)
         trt_col = [v for v in data.columns if v not in ctl_col]
         self.tgt_trt.load(data[trt_col])
         self.tgt_ctl.load(data[ctl_col])
+        if self.grd.feature is not None:
+            assert self.grd.feature == self.tgt.feature
 
 
     def split_data(self, idx):
