@@ -54,8 +54,8 @@ class Data:
 
     def concat(self):
         """ concat again """
-        name_split = self.feature[self.idx_split]
-        name_remain = self.feature[self.idx_remain]
+        name_split = [self.feature[i] for i in self.idx_split]
+        name_remain = [self.feature[i] for i in self.idx_remain]
         spl = pd.DataFrame(self.y, index=name_split, columns=self.sample)
         rem = pd.DataFrame(self.X, index=name_remain, columns=self.sample)
         tmp = pd.concat([rem, spl], axis=0, join="inner")
