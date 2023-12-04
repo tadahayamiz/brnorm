@@ -68,20 +68,20 @@ class Data:
 class DataHandler:
     """ dataのマネージャー"""
     def __init__(self):
-        self.grd_trt = Data()
+        self.grd = Data()
         self.grd_ctl = Data()
-        self.tgt_trt = Data()
+        self.tgt = Data()
         self.tgt_ctl = Data()
 
     
     def get_grd(self):
-        """ getter for grd, (control, treatment) """
-        return (self.grd_ctl, self.grd_trt)
+        """ getter for grd, (whole, control) """
+        return (self.grd, self.grd_ctl)
 
 
     def get_tgt(self):
-        """ getter for tgt, (control, treatment) """
-        return (self.tgt_ctl, self.tgt_trt)
+        """ getter for tgt, (whole, control) """
+        return (self.tgt, self.tgt_ctl)
 
 
     def load_grd(self, data, key_ctl:str="dmso", normalize:bool=True):
@@ -96,16 +96,15 @@ class DataHandler:
         if ctl.shape[0] == 0:
             print(f"!! CAUTION: no sample includes {key_ctl} !!")
         ctl_col = list(ctl.columns)
-        trt_col = [v for v in data.columns if v not in ctl_col]
-        self.grd_trt.load(data[trt_col])
+        self.grd_trt.load(data)
         self.grd_ctl.load(data[ctl_col])
-        if self.tgt_trt.feature is not None:
-            assert self.grd_trt.feature == self.tgt_trt.feature
+        if self.tgt.feature is not None:
+            assert self.grd.feature == self.tgt.feature
         if normalize:
+            self.grd = (self.grd.T - self.grd.sample_mean) / self.grd.sample_std
+            self.grd = self.grd.T
             self.grd_ctl = (self.grd_ctl.T - self.grd_ctl.sample_mean) / self.grd_ctl.sample_std
             self.grd_ctl = self.grd_ctl.T
-            self.grd_trt = (self.grd_trt.T - self.grd_trt.sample_mean) / self.grd_trt.sample_std
-            self.grd_trt = self.grd_trt.T
 
     
     def load_tgt(self, data, key_ctl:str="dmso", normalize:bool=True):
@@ -120,16 +119,15 @@ class DataHandler:
         if ctl.shape[0] == 0:
             print(f"!! CAUTION: no sample includes {key_ctl} !!")
         ctl_col = list(ctl.columns)
-        trt_col = [v for v in data.columns if v not in ctl_col]
-        self.tgt_trt.load(data[trt_col])
+        self.tgt.load(data)
         self.tgt_ctl.load(data[ctl_col])
-        if self.grd_trt.feature is not None:
-            assert self.grd_trt.feature == self.tgt_trt.feature
+        if self.grd.feature is not None:
+            assert self.grd.feature == self.tgt.feature
         if normalize:
+            self.tgt = (self.tgt.T - self.tgt.sample_mean) / self.tgt.sample_std
+            self.tgt = self.tgt.T
             self.tgt_ctl = (self.tgt_ctl.T - self.tgt_ctl.sample_mean) / self.tgt_ctl.sample_std
             self.tgt_ctl = self.tgt_ctl.T
-            self.tgt_trt = (self.tgt_trt.T - self.tgt_trt.sample_mean) / self.tgt_trt.sample_std
-            self.tgt_trt = self.tgt_trt.T
 
 
     def split_data(self, idx):
@@ -138,7 +136,7 @@ class DataHandler:
             ground truthとtargetで異なるindex
         
         """
-        for d in [self.grd_ctl, self.grd_trt, self.tgt_ctl, self.tgt_trt]:
+        for d in [self.grd_ctl, self.grd, self.tgt_ctl, self.tgt]:
             d.split(idx)
 
 
@@ -148,5 +146,5 @@ class DataHandler:
             ground truthとtargetで異なるindex
         
         """
-        for d in [self.grd_ctl, self.grd_trt, self.tgt_ctl, self.tgt_trt]:
+        for d in [self.grd_ctl, self.grd, self.tgt_ctl, self.tgt]:
             d.concat()
